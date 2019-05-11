@@ -1,3 +1,4 @@
 *.a
 *.o
 *.so
+example_loop

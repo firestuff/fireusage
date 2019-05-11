@@ -1,9 +1,9 @@
 FIRE_CXX ?= clang++
 FIRE_CXXFLAGS ?= -O3 -std=gnu++2a -Wall -Werror -Wextra -fPIE -fPIC -fstack-protector-strong -fsanitize=safe-stack -fsanitize=safe-stack
 FIRE_LDFLAGS ?= -fuse-ld=gold -flto -Wl,-z,relro -Wl,-z,now
-FIRE_LDLIBS ?= -lglog
+FIRE_LDLIBS ?= -lgflags -lglog
 
-all: fireusage.a fireusage.o fireusage.so
+all: fireusage.a fireusage.o fireusage.so example_loop
 
 objects = usage.o
 
@@ -15,6 +15,9 @@ fireusage.o: $(objects)
 
 fireusage.so: $(objects)
 	$(FIRE_CXX) $(FIRE_CXXFLAGS) $(FIRE_LDFLAGS) -shared -o $@ $+ $(FIRE_LDFLIBS)
+
+example_loop: example_loop.o fireusage.o
+	$(FIRE_CXX) $(FIRE_CXXFLAGS) $(FIRE_LDFLAGS) -pie -o $@ $+ $(FIRE_LDLIBS)
 
 %.o: %.cc *.h Makefile
 	$(FIRE_CXX) $(FIRE_CXXFLAGS) -c -o $@ $<

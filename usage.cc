@@ -50,8 +50,8 @@ void UsageTracker::Log() {
 	VLOG(1) << "usage:";
 	VLOG(1) << "\t               events: " << std::setw(19) << std::setfill(' ') << events_;
 	VLOG(1) << "\t            wall time: " << std::setw(19) << std::setfill(' ') << wall_time_.count() << "ns";
-	VLOG(1) << "\t            user time: " << std::setw(19) << std::setfill(' ') << user_time_.count() << "ns";
-	VLOG(1) << "\t             sys time: " << std::setw(19) << std::setfill(' ') << sys_time_.count() << "ns";
+	VLOG(1) << "\t            user time: " << std::setw(19) << std::setfill(' ') << user_time_.count() << "ns (" << ((user_time_ * 100) / (user_time_ + sys_time_)) << "%)";
+	VLOG(1) << "\t             sys time: " << std::setw(19) << std::setfill(' ') << sys_time_.count() << "ns (" << ((sys_time_ * 100) / (user_time_ + sys_time_)) << "%)";
 	VLOG(1) << "\t          vol ctxt sw: " << std::setw(19) << std::setfill(' ') << vol_ctxt_sw_;
 	VLOG(1) << "\t        invol ctxt sw: " << std::setw(19) << std::setfill(' ') << invol_ctxt_sw_;
 	if (events_) {

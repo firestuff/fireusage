@@ -46,8 +46,12 @@ void UsageTracker::Stop() {
 	invol_ctxt_sw_ += end_usage.ru_nivcsw - start_usage_.ru_nivcsw;
 }
 
-void UsageTracker::Log() {
-	VLOG(1) << "usage:";
+void UsageTracker::Log(const std::string_view& title) {
+	if (!title.empty()) {
+		// Need to do this here so --vmodule works properly
+		VLOG(1) << title << ":";
+	}
+
 	VLOG(1) << "\t               events: " << std::setw(19) << std::setfill(' ') << events_;
 	VLOG(1) << "\t            wall time: " << std::setw(19) << std::setfill(' ') << wall_time_.count() << "ns";
 	VLOG(1) << "\t            user time: " << std::setw(19) << std::setfill(' ') << user_time_.count() << "ns (" << ((user_time_ * 100) / (user_time_ + sys_time_)) << "%)";

@@ -13,7 +13,7 @@ class UsageTracker {
 
 	void Start();
 	void Stop();
-	void Log();
+	void Log(const std::string_view& title="");
 
   private:
 	bool running_ = false;

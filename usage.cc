@@ -34,25 +34,31 @@ void UsageTracker::Stop() {
 	CHECK(running_);
 	running_ = false;
 
-	const auto end_time_ = std::chrono::steady_clock::now();
+	const auto end_time = std::chrono::steady_clock::now();
 
-	rusage end_usage_;
-	PCHECK(getrusage(RUSAGE_THREAD, &end_usage_) == 0);
+	rusage end_usage;
+	PCHECK(getrusage(RUSAGE_THREAD, &end_usage) == 0);
 
-	wall_time_ += end_time_ - start_time_;
-	user_time_ += TvToNs(end_usage_.ru_utime) - TvToNs(start_usage_.ru_utime);
-	sys_time_ += TvToNs(end_usage_.ru_stime) - TvToNs(start_usage_.ru_stime);
+	wall_time_ += end_time - start_time_;
+	user_time_ += TvToNs(end_usage.ru_utime) - TvToNs(start_usage_.ru_utime);
+	sys_time_ += TvToNs(end_usage.ru_stime) - TvToNs(start_usage_.ru_stime);
+	vol_ctxt_sw_ += end_usage.ru_nvcsw - start_usage_.ru_nvcsw;
+	invol_ctxt_sw_ += end_usage.ru_nivcsw - start_usage_.ru_nivcsw;
 }
 
 void UsageTracker::Log() {
 	VLOG(1) << "usage:";
-	VLOG(1) << "\tevents:            " << std::setw(20) << std::setfill(' ') << events_;
-	VLOG(1) << "\twall time:         " << std::setw(20) << std::setfill(' ') << wall_time_.count() << "ns";
-	VLOG(1) << "\tuser time:         " << std::setw(20) << std::setfill(' ') << user_time_.count() << "ns";
-	VLOG(1) << "\tsys time:          " << std::setw(20) << std::setfill(' ') << sys_time_.count() << "ns";
-	VLOG(1) << "\twall time / event: " << std::setw(20) << std::setfill(' ') << (wall_time_ / events_).count() << "ns";
-	VLOG(1) << "\tuser time / event: " << std::setw(20) << std::setfill(' ') << (user_time_ / events_).count() << "ns";
-	VLOG(1) << "\tsys time / event:  " << std::setw(20) << std::setfill(' ') << (sys_time_ / events_).count() << "ns";
+	VLOG(1) << "\t               events: " << std::setw(19) << std::setfill(' ') << events_;
+	VLOG(1) << "\t            wall time: " << std::setw(19) << std::setfill(' ') << wall_time_.count() << "ns";
+	VLOG(1) << "\t            user time: " << std::setw(19) << std::setfill(' ') << user_time_.count() << "ns";
+	VLOG(1) << "\t             sys time: " << std::setw(19) << std::setfill(' ') << sys_time_.count() << "ns";
+	VLOG(1) << "\t          vol ctxt sw: " << std::setw(19) << std::setfill(' ') << vol_ctxt_sw_;
+	VLOG(1) << "\t        invol ctxt sw: " << std::setw(19) << std::setfill(' ') << invol_ctxt_sw_;
+	VLOG(1) << "\t    wall time / event: " << std::setw(19) << std::setfill(' ') << (wall_time_ / events_).count() << "ns";
+	VLOG(1) << "\t    user time / event: " << std::setw(19) << std::setfill(' ') << (user_time_ / events_).count() << "ns";
+	VLOG(1) << "\t     sys time / event: " << std::setw(19) << std::setfill(' ') << (sys_time_ / events_).count() << "ns";
+	VLOG(1) << "\t  vol ctxt sw / event: " << std::setw(19) << std::setfill(' ') << (vol_ctxt_sw_ / events_);
+	VLOG(1) << "\tinvol ctxt sw / event: " << std::setw(19) << std::setfill(' ') << (invol_ctxt_sw_ / events_);
 }
 
 } // namespace fireusage

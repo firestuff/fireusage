@@ -45,14 +45,14 @@ void UsageTracker::Stop() {
 }
 
 void UsageTracker::Log() {
-	LOG(INFO) << "usage:";
-	LOG(INFO) << "\tevents:            " << std::setw(20) << std::setfill(' ') << events_;
-	LOG(INFO) << "\twall time:         " << std::setw(20) << std::setfill(' ') << wall_time_.count() << "ns";
-	LOG(INFO) << "\tuser time:         " << std::setw(20) << std::setfill(' ') << user_time_.count() << "ns";
-	LOG(INFO) << "\tsys time:          " << std::setw(20) << std::setfill(' ') << sys_time_.count() << "ns";
-	LOG(INFO) << "\twall time / event: " << std::setw(20) << std::setfill(' ') << (wall_time_ / events_).count() << "ns";
-	LOG(INFO) << "\tuser time / event: " << std::setw(20) << std::setfill(' ') << (user_time_ / events_).count() << "ns";
-	LOG(INFO) << "\tsys time / event:  " << std::setw(20) << std::setfill(' ') << (sys_time_ / events_).count() << "ns";
+	VLOG(1) << "usage:";
+	VLOG(1) << "\tevents:            " << std::setw(20) << std::setfill(' ') << events_;
+	VLOG(1) << "\twall time:         " << std::setw(20) << std::setfill(' ') << wall_time_.count() << "ns";
+	VLOG(1) << "\tuser time:         " << std::setw(20) << std::setfill(' ') << user_time_.count() << "ns";
+	VLOG(1) << "\tsys time:          " << std::setw(20) << std::setfill(' ') << sys_time_.count() << "ns";
+	VLOG(1) << "\twall time / event: " << std::setw(20) << std::setfill(' ') << (wall_time_ / events_).count() << "ns";
+	VLOG(1) << "\tuser time / event: " << std::setw(20) << std::setfill(' ') << (user_time_ / events_).count() << "ns";
+	VLOG(1) << "\tsys time / event:  " << std::setw(20) << std::setfill(' ') << (sys_time_ / events_).count() << "ns";
 }
 
 } // namespace fireusage

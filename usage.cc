@@ -54,11 +54,13 @@ void UsageTracker::Log() {
 	VLOG(1) << "\t             sys time: " << std::setw(19) << std::setfill(' ') << sys_time_.count() << "ns";
 	VLOG(1) << "\t          vol ctxt sw: " << std::setw(19) << std::setfill(' ') << vol_ctxt_sw_;
 	VLOG(1) << "\t        invol ctxt sw: " << std::setw(19) << std::setfill(' ') << invol_ctxt_sw_;
-	VLOG(1) << "\t    wall time / event: " << std::setw(19) << std::setfill(' ') << (wall_time_ / events_).count() << "ns";
-	VLOG(1) << "\t    user time / event: " << std::setw(19) << std::setfill(' ') << (user_time_ / events_).count() << "ns";
-	VLOG(1) << "\t     sys time / event: " << std::setw(19) << std::setfill(' ') << (sys_time_ / events_).count() << "ns";
-	VLOG(1) << "\t  vol ctxt sw / event: " << std::setw(19) << std::setfill(' ') << (vol_ctxt_sw_ / events_);
-	VLOG(1) << "\tinvol ctxt sw / event: " << std::setw(19) << std::setfill(' ') << (invol_ctxt_sw_ / events_);
+	if (events_) {
+		VLOG(1) << "\t    wall time / event: " << std::setw(19) << std::setfill(' ') << (wall_time_ / events_).count() << "ns";
+		VLOG(1) << "\t    user time / event: " << std::setw(19) << std::setfill(' ') << (user_time_ / events_).count() << "ns";
+		VLOG(1) << "\t     sys time / event: " << std::setw(19) << std::setfill(' ') << (sys_time_ / events_).count() << "ns";
+		VLOG(1) << "\t  vol ctxt sw / event: " << std::setw(19) << std::setfill(' ') << (vol_ctxt_sw_ / events_);
+		VLOG(1) << "\tinvol ctxt sw / event: " << std::setw(19) << std::setfill(' ') << (invol_ctxt_sw_ / events_);
+	}
 }
 
 } // namespace fireusage

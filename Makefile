@@ -14,7 +14,7 @@ fireusage.o: $(objects)
 	gold -z relro -z now -r --output=$@ $+
 
 fireusage.so: $(objects)
-	$(FIRE_CXX) $(FIRE_CXXFLAGS) $(FIRE_LDFLAGS) -shared -o $@ $+ $(FIRE_LDFLIBS)
+	$(FIRE_CXX) $(FIRE_CXXFLAGS) $(FIRE_LDFLAGS) -shared -o $@ $+ $(FIRE_LDLIBS)
 
 example_loop: example_loop.o fireusage.o
 	$(FIRE_CXX) $(FIRE_CXXFLAGS) $(FIRE_LDFLAGS) -pie -o $@ $+ $(FIRE_LDLIBS)
